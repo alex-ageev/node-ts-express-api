@@ -68,41 +68,20 @@ class AuthController {
     try {
       const { username, password } = req.body;
 
-      const foundUser = await AuthService.foundUser(req.body);
+      const foundUser = await AuthService.login(username, password);
 
-      if (!foundUser) {
-        return res.status(500).json({ message: "User ${username} not found" });
-      }
-
-      // encontramos o user, falta comparar as passwords
-      const validPassword = await AuthService.validPassword(
-        req.body,
-        foundUser
-      );
-
-      if (!validPassword) {
-        return res.status(500).json({ message: "Password invalid" });
-      }
-
-      // geramos o nosso token
-      const token = generateAcessToken(foundUser._id, foundUser.roles);
-      console.log(token);
-
-      return res.json({ token });
+      return res.json({ message: "Login success", foundUser });
     } catch (e: unknown) {
       if (e instanceof Error) {
         console.log(e.message);
       }
-      res.status(500).json("Login failed.");
+      res.status(500).json("Login failed");
     }
   }
+
   async getUsers(req: any, res: express.Response) {
     try {
-      // const userRole = new Role()
-      // const adminRole = new Role({value: "ADMIN"})
-      // await userRole.save()
-      // await adminRole.save()
-      console.log(req.user.id);
+      console.log(req.user);
       const users = await AuthService.getAllUsers();
 
       res.json(users);
