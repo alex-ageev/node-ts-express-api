@@ -14,7 +14,9 @@ class ProductController {
     */
   async create(req: express.Request, res: express.Response) {
     try {
-      console.log(req.files);
+      //console.log(req.files);
+      console.log(req.body)
+      console.log(req.files)
       const createdProduct = await ProductService.create(req.body);
       res.json(createdProduct);
     } catch (e: unknown) {

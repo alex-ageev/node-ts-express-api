@@ -26,9 +26,11 @@ router.post(
 );
 
 router.post("/login", AuthController.login);
-
+router.post("/logout", AuthController.logout);
+router.post("/refresh", AuthController.refresh);
 //router.get('/users', AuthController.getUsers);
 //router.get('/users', authMiddleware, AuthController.getUsers);
-router.get("/users", roleMiddleware(["ADMIN", "USER"]), AuthController.getUsers);
+//router.get("/users", roleMiddleware(["ADMIN", "USER"]), AuthController.getUsers);
+router.get("/users", AuthController.getUsers);
 
 export default router;

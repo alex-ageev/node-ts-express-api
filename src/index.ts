@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 import productRouter from "./routers/productRouter";
 import authRouter from "./routers/authRouter";
 import dotenv from "dotenv";
+import fileUpload from "express-fileupload";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -13,9 +15,14 @@ const DB_URL: string = String(process.env.MONGO_URI);
 // chamamos a função express
 const app = express();
 
+app.use(express.urlencoded({extended: true}));
 app.use(express.json());
+app.use(cookieParser());
+app.use(fileUpload());
 app.use("/api", productRouter);
 app.use("/auth", authRouter);
+
+
 const connectToDb = async () => {
   try {
     mongoose.set("strictQuery", true);

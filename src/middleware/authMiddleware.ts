@@ -14,9 +14,6 @@ import { Request, Response, NextFunction } from "express";
 /*
   Só podem aceder os utilizadores logados
 */
-interface TokenPayload {
-  roles: string[];
-}
 
 export default (req: any, res: Response, next: NextFunction) => {
   if (req.method === "OPTIONS") {
@@ -43,7 +40,7 @@ export default (req: any, res: Response, next: NextFunction) => {
     */
     const decoded = jwt.verify(
       token,
-      String(process.env.SECRET_KEY)
+      String(process.env.JWT_ACCESS_SECRET_KEY)
     ) as TokenPayload;
     /*
       neste momento temos o objeto com o id e as roles

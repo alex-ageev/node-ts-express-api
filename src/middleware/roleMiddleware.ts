@@ -1,11 +1,12 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
-
+import TokenService from "../services/TokenService";
 import dotenv from "dotenv";
 
 dotenv.config();
 
 interface TokenPayload {
+  id: string,
   roles: string[];
 }
 
@@ -26,10 +27,8 @@ export default (allowedRoles: string[]) => {
     }
 
     try {
-      const decoded = jwt.verify(
-        token,
-        String(process.env.SECRET_KEY)
-      ) as TokenPayload;
+      const decoded = TokenService.validateAccessToken(token) as TokenPayload
+
       const userRoles = decoded.roles;
 
       if (!userRoles.some((role) => allowedRoles.includes(role))) {
